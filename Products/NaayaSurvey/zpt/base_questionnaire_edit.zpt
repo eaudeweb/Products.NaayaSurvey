@@ -1,0 +1,58 @@
+<tal:block metal:define-macro="page" tal:define="stool here/portal_survey">
+	<tal:block metal:use-macro="python:here.getFormsTool().getForm('site_macro_edit').macros['page']">
+		<metal:block fill-slot="custom_scripts">
+			<link rel="stylesheet" type="text/css" media="all"
+			      tal:attributes="href string:${stool/absolute_url}/css_survey_common" />
+		</metal:block>
+
+		<div class="floated-buttons">
+			<span class="buttons">
+				<a tal:attributes="href here/absolute_url" i18n:translate="">Back to index</a>
+			</span>
+		</div>
+
+		<h1 metal:fill-slot="title" i18n:translate="">Edit Survey</h1>
+
+		<div class="field" metal:fill-slot="doc_discussion" />
+
+		<metal:block fill-slot="custom_boxes">
+			<metal:block define-slot="custom_boxes">
+			</metal:block>
+		</metal:block>
+
+		<metal:block fill-slot="custom_properties">
+			<!-- Document expiration date -->
+			<div class="field">
+				<label for="expirationdate"><span i18n:translate="">Expiration date</span><span tal:condition="python:here.get_pluggable_item_property_mandatory(here.meta_type, 'releasedate')" class="mandatory_field"> *</span></label>
+				<input type="text" name="expirationdate" class="vDateField" id="expirationdate" size="10" tal:attributes="value python:here.getSession('releasedate', here.utConvertDateTimeObjToString(here.getVersionProperty('expirationdate')))" />
+				<noscript><em i18n:translate="">dd/mm/yyyy</em></noscript>
+			<div class="field">
+			<!-- Notify owner -->
+			<div class="field">
+				<label for="notify_owner" i18n:translate="">Notify owner when someone takes the survey</label>
+				<select id="notify_owner" name="notify_owner:boolean" tal:define="notify_owner here/notify_owner">
+					<option value="True" tal:attributes="selected notify_owner" i18n:translate="">Yes</option>
+					<option value="False" tal:attributes="selected not:notify_owner" i18n:translate="">No</option>
+				</select>
+			</div>
+			<!-- Notify respondents -->
+			<div class="field">
+				<label for="notify_respondents" i18n:translate="">Email answer to respondents</label>
+				<select id="notify_respondents" name="notify_respondents:string" tal:define="notify_respondents here/notify_respondents">
+					<option value="ALWAYS" tal:attributes="selected python:notify_respondents == 'ALWAYS'" i18n:translate="">Always</option>
+					<option value="NEVER" tal:attributes="selected python:notify_respondents == 'NEVER'" i18n:translate="">Never</option>
+					<option value="LET_THEM_CHOOSE_YES" tal:attributes="selected python:notify_respondents == 'LET_THEM_CHOOSE_YES'" i18n:translate="">Let them choose (default is yes)</option>
+					<option value="LET_THEM_CHOOSE_NO" tal:attributes="selected python:notify_respondents == 'LET_THEM_CHOOSE_NO'" i18n:translate="">Let them choose (default is no)</option>
+				</select>
+			</div>
+			<!-- Allow overtime -->
+			<div class="field">
+				<label for="allow_overtime" i18n:translate="">Allow posting answers after the survey expiration date</label>
+				<select id="allow_overtime" name="allow_overtime">
+					<option value="1" tal:attributes="selected here/allow_overtime" i18n:translate="">Yes</option>
+					<option value="0" tal:attributes="selected not:here/allow_overtime" i18n:translate="">No</option>
+				</select>
+			</div>
+		</metal:block>
+	</tal:block>
+</tal:block>
